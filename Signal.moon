@@ -9,12 +9,18 @@ class Signal
      @@instance = Signal!
     @@instance
 
-  register: (s, f) =>
+  register: (s, f = nil) =>
     if @signals[s] == nil
       @signals[s] = {}
-      @signals[s][f] = {}
+      if f ~= nil
+        @signals[s][f] = {}
     else
       @signals[s][f] = {}
+
+  addSignals: (...) =>
+    signals = {...}
+    for s in pairs signals
+      @register signals[s]
 
   -- bind a function to a signal
   bind: (s, f) =>
@@ -65,6 +71,11 @@ class Signal
     for s in pairs @signals
       if s\match p
         @unbind s, ...
+
+  emitPattern: (p, ...) =>
+    for s in pairs @signals
+      if s\match p
+        @emit s, ...
 
   clearPattern: (p) =>
     for s in pairs @signals
