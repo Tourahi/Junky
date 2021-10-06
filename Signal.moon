@@ -1,13 +1,13 @@
 -- singleton
 class Signal 
+  @instance = nil
   new: =>
     @signals = {}
-    @instance = nil
 
   getInstance: =>
-    if @instance == nil
-      @instance = Signal!
-    @instance
+    if @@instance == nil
+     @@instance = Signal!
+    @@instance
 
   register: (s, f) =>
     if @signals[s] == nil
@@ -16,7 +16,7 @@ class Signal
     else
       @signals[s][f] = {}
 
-  -- bing a function to a signal
+  -- bind a function to a signal
   bind: (s, f) =>
     @register s, f      
     @signals[s][f] = f
@@ -38,10 +38,19 @@ class Signal
 
   -- unbind a function from a signal 
   unbind: (s, ...)=>
+    assert @signals[s] ~= nil, "Signal "..s.." is not registred."
     f = {...}
     for i = 1, select '#', ...
       ref = f[i]
       @signals[s][ref] = nil
+
+  clear: (s) =>
+    assert @signals[s] ~= nil, "Signal "..s.." is not registred."
+    @signals[s] = {}
+
+  drop: (s) =>
+    assert @signals[s] ~= nil, "Signal "..s.." is not registred."
+    @signals[s] = nil    
 
 
 Signal
