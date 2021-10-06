@@ -20,7 +20,7 @@ class Signal
   bind: (s, f) =>
     @register s, f      
     @signals[s][f] = f
-    return f
+    f
 
   -- emit a signal
   emit: (s, ...) =>
@@ -50,7 +50,30 @@ class Signal
 
   drop: (s) =>
     assert @signals[s] ~= nil, "Signal "..s.." is not registred."
-    @signals[s] = nil    
+    @signals[s] = nil
 
+  -- bind a function to every signal that matches the pattern
+  -- INFO : it does not create the signal if it does not exist
+  bindPattern: (p, f) =>
+    for s in pairs @signals
+      if s\match p
+        @bind s, f
+    f
+
+  -- unbind a function from every signal that matches the pattern
+  unbindPattern: (p, ...) =>
+    for s in pairs @signals
+      if s\match p
+        @unbind s, ...
+
+  clearPattern: (p) =>
+    for s in pairs @signals
+      if s\match p
+        @clear s
+
+  dropPattern: (p) =>
+    for s in pairs @signals
+      if s\match p
+        @drop s
 
 Signal

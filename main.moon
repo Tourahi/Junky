@@ -7,6 +7,7 @@ with love
     signal = Signal\getInstance!
     signal\bind 'hello', -> print("hello")
     booRef = signal\bind 'hello', -> print("boo")
-    signal\unbind 'hello', booRef
+    -- signal\unbind 'hello', booRef
     signal\emit 'hello'
+    signal\drop 'hello'
     
