@@ -1,3 +1,5 @@
+sqrt, cos, sin, atan2 = math.sqrt, math.cos, math.sin, math.atan2
+min, max = math.min, math.max
 
 class vector2D
   new: (x = 0, y = 0) =>
@@ -52,5 +54,48 @@ class vector2D
   __le: (a, b) ->
     a.x <= b.x and a.y <= b.y
 
+  __unm: (a) ->
+    vector2D -a.x, -a.y
+
+  len: =>
+    sqrt(@x * @x + @y * @y) 
+
+  len2: =>
+    @x * @x + @y * @y
+
+  magnitude: =>
+    @len!
+
+  overwrite: (v) =>
+    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [Overwrite]" )
+    @x = v.x
+    @y = v.y
+
+  normalize: =>
+    mag = @magnitude!
+    if mag ~= 0
+      @overwrite self / mag
+
+  norm: =>
+    mag = @magnitude!
+    if mag ~= 0
+      return self / mag
+
+  clamp: (min, max) =>
+    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [Clamp]" )
+    @x = min(max(@x, min.x), max.x)
+    @y = min(max(@y, min.y), max.y)
+
+  clampX: (min, max) =>
+    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [ClampX]" )
+    @x = min(max(@x, min.x), max.x)
+
+  clampY: (min, max) =>
+    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [ClampY]" )
+    @y = min(max(@y, min.y), max.y)
+
+  
+
+  
 
 vector2D
