@@ -94,8 +94,24 @@ class vector2D
     assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [ClampY]" )
     @y = min(max(@y, min.y), max.y)
 
-  
+  parmul: (a, b) =>
+    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
+    vector2D a.x*b.x, a.y*b.y
 
+  toPolar: =>
+    vector2D atan2(@x, @y), @len!
+
+  dist: (a, b) =>
+    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
+    dx = a.x - b.x
+    dy = a.y - b.y
+    sqrt(dx*dx + dy*dy)
+
+  dist2: (a, b) =>
+    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
+    dx = a.x - b.x
+    dy = a.y - b.y
+    dx*dx + dy*dy
   
 
 vector2D
