@@ -113,5 +113,24 @@ class vector2D
     dy = a.y - b.y
     dx*dx + dy*dy
   
+  rotate: (phi) =>
+    c, s = cos(phi), sin(phi)
+    @x, @y = c * @x - s * @y, s * @x + c * @y
+    self
+
+  rot: (phi) =>
+    c, s = cos(phi), sin(phi)
+    vector2D c * @x - s * @y, s * @x + c * @y
+
+  perpendicular: =>
+    vector2D -@y, @x
+
+  projectOn: (v) =>
+    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [ProjectOn]" )
+    s = (@x * v.x + @y * v.y) / (v.x * v.x + v.y * v.y)
+    vector2D s * v.x - @x, s * v.y - @y
+
+
+
 
 vector2D
