@@ -1,5 +1,7 @@
 sqrt, cos, sin, atan2 = math.sqrt, math.cos, math.sin, math.atan2
 min, max = math.min, math.max
+rand = love.math.random
+pi = math.pi
 
 class vector2D
   new: (x = 0, y = 0) =>
@@ -130,7 +132,24 @@ class vector2D
     s = (@x * v.x + @y * v.y) / (v.x * v.x + v.y * v.y)
     vector2D s * v.x - @x, s * v.y - @y
 
+  mirrorOn: (v) =>
+    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [MirrorOn]" )
+    s = 2 * (@x * v.x + @y * v.y) / (v.x * v.x + v.y * v.y)
+    vector2D s * v.x - @x, s * v.y - @y
 
+  cross: (v) =>
+    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [Cross]" )
+    @x * v.y - @y * v.x -- parallelogram_area
 
+  heading: =>
+    -atan2 @y, @x
+
+  -- t: theta
+  @fromAngle: (t) ->
+    vector2D cos(t), -sin(t)
+
+  @random: =>
+    t = rand! * pi * 2
+    vector2D.fromAngle t
 
 vector2D
