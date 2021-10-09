@@ -2,7 +2,7 @@ sqrt, cos, sin, atan2 = math.sqrt, math.cos, math.sin, math.atan2
 min, max = math.min, math.max
 rand = love.math.random
 pi = math.pi
-inf = 1e309
+inf = math.huge
 
 class Vector2D
   new: (x = 0, y = 0) =>
@@ -16,6 +16,12 @@ class Vector2D
 
   @one: ->
     return Vector2D 1, 1
+
+  @positiveInfinity: ->
+    return Vector2D inf, inf  
+
+  @negativeInfinity: ->
+    return Vector2D -inf, -inf  
 
   @up: ->
     return Vector2D 0, 1

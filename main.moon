@@ -11,6 +11,7 @@ with love
     v3 = v and v2
     print "v3:", v3
     print v, v\magnitude!
+    print Vector2D.positiveInfinity!
 
   .update = (dt) ->
     shake\update dt
