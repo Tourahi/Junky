@@ -2,8 +2,9 @@ sqrt, cos, sin, atan2 = math.sqrt, math.cos, math.sin, math.atan2
 min, max = math.min, math.max
 rand = love.math.random
 pi = math.pi
+inf = 1e309
 
-class vector2D
+class Vector2D
   new: (x = 0, y = 0) =>
     assert('number' == type(x) and 'number' == type(y),
       'x and y must be numbers.')
@@ -11,13 +12,28 @@ class vector2D
     @y = y
     
   @zero: ->
-    return vector2D!
+    return Vector2D!
+
+  @one: ->
+    return Vector2D 1, 1
+
+  @up: ->
+    return Vector2D 0, 1
+
+  @down: ->
+    return Vector2D 0, -1
+
+  @right: ->
+    return Vector2D 1, 0
+
+  @left: ->
+    return Vector2D -1, 0
 
   @isvector: (v) ->
-    v.__class == vector2D
+    v.__class == Vector2D
   
   clone: =>
-    vector2D @x, @y
+    Vector2D @x, @y
   
   unpack: =>
     @x, @y
@@ -26,26 +42,26 @@ class vector2D
     "("..tonumber(@x)..","..tonumber(@y)..")"
   
   __add: (a, b) ->
-    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
-    vector2D a.x+b.x, a.y+b.y
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
+    Vector2D a.x+b.x, a.y+b.y
   
   __sub: (a, b) ->
-    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Sub]" )
-    vector2D a.x-b.x, a.y-b.y
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Sub]" )
+    Vector2D a.x-b.x, a.y-b.y
 
   __mul: (a, b) ->
     if type a == 'number'
-      vector2D a*b.x, a*b.y
+      Vector2D a*b.x, a*b.y
     elseif type b == 'number'
-      vector2D b*a.x, b*a.y
+      Vector2D b*a.x, b*a.y
     else
-      assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Mul]" )
+      assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Mul]" )
       a.x*b.x + a.y*b.y -- Dot product
 
   __div: (a, b) ->
-    assert( vector2D.isvector(a) and type(b) == 'number', "Wrong argument types <vector2D, number> expected. [Div]" )
+    assert( Vector2D.isvector(a) and type(b) == 'number', "Wrong argument types <Vector2D, number> expected. [Div]" )
     assert(b ~= 0, "Division by 0 is undefined. [Div]")
-    vector2D a.x/b, a.y/b
+    Vector2D a.x/b, a.y/b
 
   __eq: (a, b) ->
     a.x == b.x and a.y == b.y
@@ -57,7 +73,7 @@ class vector2D
     a.x <= b.x and a.y <= b.y
 
   __unm: (a) ->
-    vector2D -a.x, -a.y
+    Vector2D -a.x, -a.y
 
   len: =>
     sqrt(@x * @x + @y * @y) 
@@ -69,7 +85,7 @@ class vector2D
     @len!
 
   overwrite: (v) =>
-    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [Overwrite]" )
+    assert( Vector2D.isvector(v), "Wrong argument types <Vector2D> expected. [Overwrite]" )
     @x = v.x
     @y = v.y
 
@@ -97,20 +113,20 @@ class vector2D
     @y = min(max(@y, min.y), max.y)
 
   parmul: (a, b) =>
-    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
-    vector2D a.x*b.x, a.y*b.y
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
+    Vector2D a.x*b.x, a.y*b.y
 
   toPolar: =>
-    vector2D atan2(@x, @y), @len!
+    Vector2D atan2(@x, @y), @len!
 
   dist: (a, b) =>
-    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
     dx = a.x - b.x
     dy = a.y - b.y
     sqrt(dx*dx + dy*dy)
 
   dist2: (a, b) =>
-    assert( vector2D.isvector(a) and vector2D.isvector(b), "Wrong argument types <vector2D> expected. [Add]" )
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
     dx = a.x - b.x
     dy = a.y - b.y
     dx*dx + dy*dy
@@ -122,23 +138,23 @@ class vector2D
 
   rot: (phi) =>
     c, s = cos(phi), sin(phi)
-    vector2D c * @x - s * @y, s * @x + c * @y
+    Vector2D c * @x - s * @y, s * @x + c * @y
 
   perpendicular: =>
-    vector2D -@y, @x
+    Vector2D -@y, @x
 
   projectOn: (v) =>
-    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [ProjectOn]" )
+    assert( Vector2D.isvector(v), "Wrong argument types <Vector2D> expected. [ProjectOn]" )
     s = (@x * v.x + @y * v.y) / (v.x * v.x + v.y * v.y)
-    vector2D s * v.x - @x, s * v.y - @y
+    Vector2D s * v.x - @x, s * v.y - @y
 
   mirrorOn: (v) =>
-    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [MirrorOn]" )
+    assert( Vector2D.isvector(v), "Wrong argument types <Vector2D> expected. [MirrorOn]" )
     s = 2 * (@x * v.x + @y * v.y) / (v.x * v.x + v.y * v.y)
-    vector2D s * v.x - @x, s * v.y - @y
+    Vector2D s * v.x - @x, s * v.y - @y
 
   cross: (v) =>
-    assert( vector2D.isvector(v), "Wrong argument types <vector2D> expected. [Cross]" )
+    assert( Vector2D.isvector(v), "Wrong argument types <Vector2D> expected. [Cross]" )
     @x * v.y - @y * v.x -- parallelogram_area
 
   heading: =>
@@ -146,10 +162,10 @@ class vector2D
 
   -- t: theta
   @fromAngle: (t) ->
-    vector2D cos(t), -sin(t)
+    Vector2D cos(t), -sin(t)
 
   @random: =>
     t = rand! * pi * 2
-    vector2D.fromAngle t
+    Vector2D.fromAngle t
 
-vector2D
+Vector2D
