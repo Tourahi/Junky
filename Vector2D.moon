@@ -119,20 +119,20 @@ class Vector2D
     @y = min(max(@y, min.y), max.y)
 
   parmul: (a, b) =>
-    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Parmul]" )
     Vector2D a.x*b.x, a.y*b.y
 
   toPolar: =>
     Vector2D atan2(@x, @y), @len!
 
   dist: (a, b) =>
-    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Dist]" )
     dx = a.x - b.x
     dy = a.y - b.y
     sqrt(dx*dx + dy*dy)
 
   dist2: (a, b) =>
-    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
+    assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Dist2]" )
     dx = a.x - b.x
     dy = a.y - b.y
     dx*dx + dy*dy
