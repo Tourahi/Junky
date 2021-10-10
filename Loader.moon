@@ -17,6 +17,11 @@ loadFile = (path) ->
   assert type(path) == 'string', "The path must be a <string>. [loadFile]"
   lf.load(path)!
 
+tmerge = (target = nil, src = nil, ...) ->
+  if target == nil or src == nil
+    return target
+  for k, v in pairs(src) do target[k] = v
+  tmerge target, ...
 
 loaders = {
   lua = lf and loadFile
@@ -36,4 +41,8 @@ loaders = {
 }
 
 class Loader
-  new: =>
+  -- c: config
+  new: (c = nil) =>
+    if type(c) == 'string'
+      config = { dir = c }
+
