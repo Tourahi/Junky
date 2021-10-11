@@ -26,6 +26,9 @@ tmerge = (target = nil, src = nil, ...) ->
 removeExt = (key) ->
   return key\gsub '%..-$', ''
 
+getExt = (file) ->
+  return file\match("[^.]+$")
+
 _loaders = {
   lua: lf and loadFile
   png: lg and lg.newImage
@@ -62,11 +65,11 @@ class Loader
       @processors = {}
 
     for _, f in ipairs lf.getDirectoryItems @path
-      key = removeExt f
-      @load key, f
+      @load removeExt(f), f, getExt(f)
 
-  load: (key, f) =>
+  load: (key, f, ext) =>
     path = (@path .. '/' .. f)\gsub '^/+', ''
     if lf.getInfo(path).type == 'file'
-      for ext, loader in pairs _loaders
-        print ext
+      for extension, loader in pairs _loaders
+        if extension == ext
+          asset = loader(path)
