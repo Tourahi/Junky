@@ -10,11 +10,12 @@ with love
     export l = Loader {
        dir: 'assets'
        processors: {
-         ['assets/GG.png']: (image, path) ->
-          print('The image path:', path)
+         ['png']: (image, path) ->
+          -- print('The image path:', path)
        }
-      }, false
+      }, true, 2
 
+    Dump l
 
     v = Vector2D 1, 2
     v2 = Vector2D 2, 3

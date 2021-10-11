@@ -49,6 +49,7 @@ _loaders = {
 }
 
 _processors = {}
+_extProcessors = {}
 
 class Loader
   -- c: config
@@ -58,19 +59,21 @@ class Loader
       c = nil
     else
       @path = c.dir
-
+      
     @config = c or {}
     rawset self, @path, {}
 
     if c
       _loaders = tmerge {}, _loaders, c.loaders
       _processors = tmerge {}, {}, c.processors
+      _extProcessors = tmerge {}, {}, c.extProcessors
     else
       _processors = {}
+      _extProcessors = {}
 
     @load @path, self[@path], rec
 
-  load: (dir, tab, rec) =>
+  load: (dir, tab, rec = false) =>
     for _, f in ipairs lf.getDirectoryItems dir
       key = removeExt(f)
       ext = getExt(f)
@@ -83,6 +86,9 @@ class Loader
             for pt, proc in pairs _processors
               if path\match pt
                 proc asset, path, self
+            for ext, proc in pairs _processors
+              if ext == extension
+                proc asset, path, self
       elseif lf.getInfo(path).type == 'directory' and rec
         rawset tab, f, {}
-        @load dir..'/'..f, tab[f], rec
+        @load dir..'/'..f, tab[f], rec, @depth
