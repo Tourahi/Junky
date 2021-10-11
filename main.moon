@@ -15,14 +15,9 @@ with love
        }
       }, true, 2
 
-    Dump l
-
-    v = Vector2D 1, 2
-    v2 = Vector2D 2, 3
-    v3 = v and v2
 
   .update = (dt) ->
     -- shake\update dt
 
   .draw = ->
-    love.graphics.draw l.assets.GG, 0, 0
+    -- love.graphics.draw l.assets.GG, 0, 0
