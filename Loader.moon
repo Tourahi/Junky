@@ -33,6 +33,7 @@ _loaders = {
   lua: lf and loadFile
   png: lg and lg.newImage
   jpg: lg and lg.newImage
+  jpeg: lg and lg.newImage
   dds: lg and lg.newImage
   ogv: lg and lg.newVideo
   glsl: lg and lg.newShader
@@ -56,7 +57,8 @@ class Loader
       @path = c.dir
 
     @config = c or {}
-    @assets = {}
+    rawset self, @path, {}
+
     if c
       @loaders = tmerge {}, _loaders, c.loaders
       @processors = tmerge {}, {}, c.processors
@@ -64,12 +66,19 @@ class Loader
       @loaders = tmerge {}, _loaders, {}
       @processors = {}
 
-    for _, f in ipairs lf.getDirectoryItems @path
-      @load removeExt(f), f, getExt(f)
+    @load @path, self[@path], rec
 
-  load: (key, f, ext) =>
-    path = (@path .. '/' .. f)\gsub '^/+', ''
-    if lf.getInfo(path).type == 'file'
-      for extension, loader in pairs _loaders
-        if extension == ext
-          asset = loader(path)
+  load: (dir, tab, rec) =>
+    for _, f in ipairs lf.getDirectoryItems dir
+      key = removeExt(f)
+      ext = getExt(f)
+      path = (dir .. '/' .. f)\gsub '^/+', ''
+      print path
+      if lf.getInfo(path).type == 'file'
+        for extension, loader in pairs _loaders
+          if extension == ext
+            asset = loader(path)
+            rawset tab, key, asset
+      elseif lf.getInfo(path).type == 'directory' and rec
+        rawset tab, f, {}
+        @load dir..'/'..f, tab[f], rec
