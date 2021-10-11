@@ -1,5 +1,6 @@
 -- Assets loader
 -- Based on cargo.lua
+-- improved and adapted to use moonscript class system.
 
 la, lf, lg = love.audio, love.filesystem, love.graphics
 
@@ -47,6 +48,8 @@ _loaders = {
   fnt: lg and lg.newFont
 }
 
+_processors = {}
+
 class Loader
   -- c: config
   new: (c = nil, rec) =>
@@ -60,11 +63,10 @@ class Loader
     rawset self, @path, {}
 
     if c
-      @loaders = tmerge {}, _loaders, c.loaders
-      @processors = tmerge {}, {}, c.processors
+      _loaders = tmerge {}, _loaders, c.loaders
+      _processors = tmerge {}, {}, c.processors
     else
-      @loaders = tmerge {}, _loaders, {}
-      @processors = {}
+      _processors = {}
 
     @load @path, self[@path], rec
 
@@ -73,12 +75,14 @@ class Loader
       key = removeExt(f)
       ext = getExt(f)
       path = (dir .. '/' .. f)\gsub '^/+', ''
-      print path
       if lf.getInfo(path).type == 'file'
         for extension, loader in pairs _loaders
           if extension == ext
             asset = loader(path)
             rawset tab, key, asset
+            for pt, proc in pairs _processors
+              if path\match pt
+                proc asset, path, self
       elseif lf.getInfo(path).type == 'directory' and rec
         rawset tab, f, {}
         @load dir..'/'..f, tab[f], rec

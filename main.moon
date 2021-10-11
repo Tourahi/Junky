@@ -7,17 +7,21 @@ export Dump = moon.p
 with love
   .load = ->
     --export shake = Shake(2, 10, 500)
-    export l = Loader 'assets', false
-    Dump l
+    export l = Loader {
+       dir: 'assets'
+       processors: {
+         ['assets/GG.png']: (image, path) ->
+          print('The image path:', path)
+       }
+      }, false
+
+
     v = Vector2D 1, 2
     v2 = Vector2D 2, 3
     v3 = v and v2
-    print "v3:", v3
-    print v, v\magnitude!
-    print Vector2D.positiveInfinity!
 
   .update = (dt) ->
     -- shake\update dt
 
   .draw = ->
-    -- love.graphics.draw l.assets.GG, 0, 0
+    love.graphics.draw l.assets.GG, 0, 0
