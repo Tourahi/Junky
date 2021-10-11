@@ -1,7 +1,6 @@
 -- Assets loader
 -- Based on cargo.lua
 -- improved and adapted to use moonscript class system.
-
 la, lf, lg = love.audio, love.filesystem, love.graphics
 
 newSound = (path) ->
@@ -59,7 +58,7 @@ class Loader
       c = nil
     else
       @path = c.dir
-      
+
     @config = c or {}
     rawset self, @path, {}
 
