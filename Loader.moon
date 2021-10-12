@@ -85,7 +85,7 @@ class Loader
             for pt, proc in pairs _processors
               if path\match pt
                 proc asset, path, self
-            for ext, proc in pairs _processors
+            for ext, proc in pairs _extProcessors
               if ext == extension
                 proc asset, path, self
       elseif lf.getInfo(path).type == 'directory' and rec
