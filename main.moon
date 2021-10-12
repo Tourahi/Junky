@@ -13,7 +13,9 @@ with love
          ['png']: (image, path) ->
           print('The image path:', path)
        }
-      }, true, 2
+      }, true
+
+    Dump l
 
 
 

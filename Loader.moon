@@ -59,7 +59,6 @@ class Loader
     else
       @path = c.dir
 
-    @config = c or {}
     rawset self, @path, {}
 
     if c
