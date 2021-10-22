@@ -2,6 +2,7 @@
 Vector2D = assert require "Vector2D"
 Loader = assert require "Loader"
 Input = assert require "Input"
+Leak = assert require "Leak"
 moon = require "moon"
 export Dump = moon.p 
 
@@ -21,9 +22,8 @@ with love
        }
       }, true
 
-    -- Dump l
 
-
+    Leak.report!
 
   .update = (dt) ->
     -- shake\update dt
