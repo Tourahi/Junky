@@ -10,7 +10,7 @@ with love
     export input = Input!
 
     with input
-      \bind 'a', 'Oy'
+      \bindArr { 'a': 'Oy', 'c': 'Oy'}
 
     --export shake = Shake(2, 10, 500)
     export l = Loader {
