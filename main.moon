@@ -25,8 +25,9 @@ with love
       }, true
 
      
-    t = Tint\RGBtoHSL {100,100,50}
-    Dump t
+    t = Tint\HEXtoRGB "#ffffff"
+    
+    print t[1] * 255, t[2] * 255, t[3] * 255
 
 
     Leak.report!

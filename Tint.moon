@@ -3,14 +3,14 @@
 
 Min = math.min
 Max = math.max
-atan = math.atan
-pi = math.pi
-sqrt = math.sqrt
-atan2 = math.atan2
-cos = math.cos
-sin = math.sin
-rad = math.rad
-abs = math.abs
+Atan = math.atan
+Pi = math.pi
+Sqrt = math.sqrt
+Atan2 = math.atan2
+Cos = math.cos
+Sin = math.sin
+Rad = math.rad
+Abs = math.abs
 
 class Tint
   new: (tpath) =>
@@ -32,7 +32,7 @@ class Tint
     _max = Max(r, g, b)
     dtMax = _max - _min
 
-    h,s,l = 0,0,0
+    h,s,l = nil,nil,nil
 
     l = (_max+_min)/2 
     
@@ -60,11 +60,47 @@ class Tint
 
     {h, s, l, a}
 
+  @RGBtoHSV: (...) =>
+    r, g, b, a = @_unpackColor ...
 
-    
+    _min = Min(r, g, b)
+    _max = Max(r, g, b)
+    dtMax = _max - _min
+
+    h,s,v = nil,nil,nil
+
+    v = _max 
+
+    if dtMax == 0
+      h, s = 0, 0
+    else
+      s = dtMax / _max
+
+      dtR = (((_max - r)/6) + (dtMax/2)) / dtMax 
+      dtG = (((_max - g)/6) + (dtMax/2)) / dtMax 
+      dtB = (((_max - b)/6) + (dtMax/2)) / dtMax
+
+      if r == _max
+        h = dtB - dtG
+      elseif g == _max
+        h = (1/3) + dtR - dtB
+      elseif b == _max
+        h = (2/3) + dtB - dtR
+
+      if h < 0 then h += 1
+      if h > 1 then h -= 1
+
+    {h, s, v, a}
+
+  @HEXtoRGB: (hex, val) =>
+    {
+      tonumber(string.sub(hex, 2, 3), 16)/255
+      tonumber(string.sub(hex, 4, 5), 16)/255
+      tonumber(string.sub(hex, 6, 7), 16)/255
+      val or 1
+    }
 
   
-
 
   @_palette = {
     aliceblue: {0.94117647058824, 0.97254901960784, 1},
