@@ -3,6 +3,7 @@ Vector2D = assert require "Vector2D"
 Loader = assert require "Loader"
 Input = assert require "Input"
 Leak = assert require "Leak"
+Tint = assert require "Tint"
 moon = require "moon"
 export Dump = moon.p 
 
@@ -11,7 +12,8 @@ with love
     export input = Input!
 
     with input
-      \bindArr { 'a': 'Oy', 'c': 'Oy'}
+      \bindArr { 'a': 'Oy', 
+        'c': 'Oy'}
 
     --export shake = Shake(2, 10, 500)
     export l = Loader {
@@ -21,6 +23,10 @@ with love
           print('The image path:', path)
        }
       }, true
+
+     
+    t = Tint\RGBtoHSL {100,100,50}
+    Dump t
 
 
     Leak.report!
