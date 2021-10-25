@@ -19,14 +19,14 @@ class Tint
 
     @properties = {} -- RGB
 
-  _unpackColor: (p1, ...) =>
+  @unpackColor: (p1, ...) =>
     if type(p1) == 'table'
       return unpack p1
     p1, ...
 
 
   @RGBtoHSL: (...) =>
-    r, g, b, a = @_unpackColor ...
+    r, g, b, a = Tint\unpackColor ...
     
     _min = Min(r, g, b)
     _max = Max(r, g, b)
@@ -61,7 +61,7 @@ class Tint
     {h, s, l, a}
 
   @RGBtoHSV: (...) =>
-    r, g, b, a = @_unpackColor ...
+    r, g, b, a = Tint\unpackColor ...
 
     _min = Min(r, g, b)
     _max = Max(r, g, b)
@@ -109,7 +109,7 @@ class Tint
     v1
 
   @HSLtoRGB: (...) =>
-    h,s,l,a = @_unpackColor ...
+    h,s,l,a = Tint\unpackColor ...
     r,g,b = nil,nil,nil
 
     if s == 0
@@ -133,7 +133,7 @@ class Tint
     {r,g,b,a}
 
   @HSVtoRGB: (...) =>
-    h,s,v,a = @_unpackColor ...
+    h,s,v,a = Tint\unpackColor ...
     r,g,b = nil,nil,nil   
 
     if s == 0
@@ -164,6 +164,34 @@ class Tint
           r,g,b = v,v1,v2
 
     {r,g,b,a}
+
+  @lighten: (amnt, ...) =>
+    h,s,l,a = Tint\RGBtoHSL Tint\unpackColor(...)
+    Tint\HSLtoRGB h,s,l+amnt,a
+
+  @darken: (amnt, ...) =>
+    h,s,l,a = Tint\RGBtoHSL Tint\unpackColor(...)
+    Tint\HSLtoRGB h,s,l-amnt,a
+
+  @saturate: (amnt, ...) =>
+    h,s,v,a = Tint\RGBtoHSV Tint\unpackColor(...)
+    Tint\HSVtoRGB h,s+amnt,l,a
+
+  @desaturate: (amnt, ...) =>
+    h,s,v,a = Tint\RGBtoHSV Tint\unpackColor(...)
+    Tint\HSVtoRGB h,s-amnt,l,a
+
+  @hue: (hue, ...) =>
+    h,s,l,a = Tint\RGBtoHSL Tint\unpackColor(...)
+    Tint\HSLtoRGB hue,s,l,a
+
+  @invert: (...) =>
+    r,g,b,a = Tint\unpackColor ...
+    1-r, 1-g, 1-b, a
+
+  @invertHue: (...) =>
+    h,s,l,a = Tint\RGBtoHSL Tint\unpackColor(...)
+    Tint\HSLtoRGB 1-h,s,l,a
 
 
   @_palette = {
