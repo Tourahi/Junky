@@ -100,7 +100,71 @@ class Tint
       val or 1
     }
 
-  
+  @HUEtoRBG: (v1, v2, vh) =>
+    if vh < 0 then vh += 1
+    if vh > 1 then vh -= 1
+    if 6*vh < 1 then return v1 + (v2 - v1) * 6 * vh
+    if 2*vh < 1 then return v2
+    if 3*vh < 2 then return v1 + (v2-v1) * ((2/3)-vh)*6
+    v1
+
+  @HSLtoRGB: (...) =>
+    h,s,l,a = @_unpackColor ...
+    r,g,b = nil,nil,nil
+
+    if s == 0
+      r = l
+      g = l
+      b = l
+    else
+      v1,v2 = nil, nil
+
+      if l < 0.5
+        v2 = l*(1+s)
+      else
+        v2 = (l+s) - (s*l)
+
+      v1 = 2*l-v2
+
+      r = @HUEtoRBG v1, v2, h + (1/3)
+      g = @HUEtoRBG v1, v2, h
+      b = @HUEtoRBG v1, v2, h - (1/3)
+
+    {r,g,b,a}
+
+  @HSVtoRGB: (...) =>
+    h,s,v,a = @_unpackColor ...
+    r,g,b = nil,nil,nil   
+
+    if s == 0
+      r = v
+      g = v
+      b = v
+    else
+      vh,vi,v1,v2,v3 = nil,nil,nil,nil,nil
+      vh = h*6
+      if vh == 6 then vh = 0
+      vi = math.floor vh
+      v1 = v*(1-s)
+      v2 = v*(1-s*(vh-vi))  
+      v3 = v*(1-s*(1-(vh-vi)))
+
+      switch vi
+        when 0
+          r,g,b = v,v3,v1
+        when 1
+          r,g,b = v2,v,v1
+        when 2
+          r,g,b = v1,v,v3
+        when 3
+          r,g,b = v1,v2,v
+        when 4
+          r,g,b = v3,v1,v
+        else
+          r,g,b = v,v1,v2
+
+    {r,g,b,a}
+
 
   @_palette = {
     aliceblue: {0.94117647058824, 0.97254901960784, 1},
