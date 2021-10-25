@@ -1,4 +1,4 @@
--- colors/Theme manager
+-- colors manipulator
 -- Color models supported RGB, HSL, HSV
 
 Min = math.min
