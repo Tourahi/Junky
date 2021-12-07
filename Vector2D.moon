@@ -56,9 +56,9 @@ class Vector2D
     Vector2D a.x-b.x, a.y-b.y
 
   __mul: (a, b) ->
-    if type a == 'number'
+    if type(a) == 'number'
       Vector2D a*b.x, a*b.y
-    elseif type b == 'number'
+    elseif type(b) == 'number'
       Vector2D b*a.x, b*a.y
     else
       assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Mul]" )
@@ -105,18 +105,18 @@ class Vector2D
     if mag ~= 0
       return self / mag
 
-  clamp: (min, max) =>
-    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [Clamp]" )
-    @x = min(max(@x, min.x), max.x)
-    @y = min(max(@y, min.y), max.y)
+  clamp: (Min, Max) =>
+    assert( Vector2D.isvector(Min) and Vector2D.isvector(Max), "Wrong argument types <Vector2D> expected. [Clamp]" )
+    @x = min(max(@x, Min.x), Max.x)
+    @y = min(max(@y, Min.y), Max.y)
 
-  clampX: (min, max) =>
-    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [ClampX]" )
-    @x = min(max(@x, min.x), max.x)
+  clampX: (Min, Max) =>
+    assert( Vector2D.isvector(Min) and Vector2D.isvector(Max), "Wrong argument types <Vector2D> expected. [clampX]" )
+    @x = min(max(@x, Min.x), Max.x)
 
-  clampY: (min, max) =>
-    assert( type(min) == 'number' and type(max) == 'number', "Wrong argument types <number, number> expected. [ClampY]" )
-    @y = min(max(@y, min.y), max.y)
+  clampY: (Min, Max) =>
+    assert( Vector2D.isvector(Min) and Vector2D.isvector(Max), "Wrong argument types <Vector2D> expected. [clampY]" )
+    @y = min(max(@y, Min.y), Max.y)
 
   parmul: (a, b) =>
     assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Parmul]" )
