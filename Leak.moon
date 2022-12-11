@@ -4,6 +4,7 @@ globalTypeTable = nil
 
 Leak.countAll = (f) ->
   seen = {}
+  -- f is enum
   countTable = (t) ->
     if seen[t] then return
     f(t)
@@ -13,6 +14,7 @@ Leak.countAll = (f) ->
         countTable v
       elseif type(v) == "userdata"
         f(v)
+
   countTable _G
 
 Leak.typeCount = ->
@@ -22,7 +24,7 @@ Leak.typeCount = ->
     counts[t] = (counts[t] or 0) + 1
   Leak.countAll enum
   counts
-    
+
 
 Leak.typeName = (o) ->
   if globalTypeTable == nil
@@ -37,12 +39,12 @@ Leak.report = (cb = nil) ->
   counts = Leak.typeCount!
   if cb
     print '--------------Object count-----------'
-    for k, v in pairs counts 
+    for k, v in pairs counts
       cb k, v
     print '-------------------------------------'
   else
     print '--------------Object count-----------'
-    for k, v in pairs counts 
+    for k, v in pairs counts
       print k .. ' : ' .. v
     print '-------------------------------------'
 

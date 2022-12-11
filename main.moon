@@ -3,16 +3,17 @@ Vector2D = assert require "Vector2D"
 Loader = assert require "Loader"
 Input = assert require "Input"
 Leak = assert require "Leak"
+Leakk = assert require "Leak_v2"
 Tint = assert require "Tint"
 moon = require "moon"
-export Dump = moon.p 
+export Dump = moon.p
 
 with love
   .load = ->
     export input = Input!
 
     with input
-      \bindArr { 'a': 'Oy', 
+      \bindArr { 'a': 'Oy',
         'c': 'Oy'}
 
     --export shake = Shake(2, 10, 500)
@@ -24,13 +25,17 @@ with love
        }
       }, true
 
-     
+
     t = Tint\HSLtoRGB {0.10,0.4,0.3}
 
-    Dump t
+    --Dump t
 
 
-    Leak.report!
+    Leakk.report!
+    --Leak.report!
+
+    print input.__class.__name
+    --Leakk.countAll nil, input
 
   .update = (dt) ->
     -- shake\update dt
