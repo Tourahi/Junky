@@ -11,7 +11,7 @@ isClass = (o) ->
   local className
   className = nil
 
-  if type(o) ~= "userdata" and o["__class"] ~= nil
+  if type(o) ~= "userdata" and o.__class ~= nil
     className = o.__class.__name
   if className ~= nil
     return className
@@ -53,13 +53,18 @@ with Leak
     enum = (o) ->
       if o == event then return
       t = Leak.getType o
-      counts[t] = (counts[t] or 0) + 1
+
+      if type(o) == "table" and o.__class
+        if getmetatable(o) ~= nil and o.__base == nil
+          counts[t] = (counts[t] or 0) + 1
+      else
+        counts[t] = (counts[t] or 0) + 1
+
     Leak.countAll enum
     counts
 
   .report = (cb = nil) ->
     counts = Leak.typeCount!
-
     if cb
       print '--------------Object count-----------'
       for k, v in pairs counts

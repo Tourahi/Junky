@@ -10,7 +10,7 @@ class Vector2D
       'x and y must be numbers.')
     @x = x
     @y = y
-    
+
   @zero: ->
     return Vector2D!
 
@@ -18,10 +18,10 @@ class Vector2D
     return Vector2D 1, 1
 
   @positiveInfinity: ->
-    return Vector2D inf, inf  
+    return Vector2D inf, inf
 
   @negativeInfinity: ->
-    return Vector2D -inf, -inf  
+    return Vector2D -inf, -inf
 
   @up: ->
     return Vector2D 0, 1
@@ -37,20 +37,20 @@ class Vector2D
 
   @isvector: (v) ->
     v.__class == Vector2D
-  
+
   clone: =>
     Vector2D @x, @y
-  
+
   unpack: =>
     @x, @y
 
   __tostring: =>
     "("..tonumber(@x)..","..tonumber(@y)..")"
-  
+
   __add: (a, b) ->
     assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Add]" )
     Vector2D a.x+b.x, a.y+b.y
-  
+
   __sub: (a, b) ->
     assert( Vector2D.isvector(a) and Vector2D.isvector(b), "Wrong argument types <Vector2D> expected. [Sub]" )
     Vector2D a.x-b.x, a.y-b.y
@@ -71,7 +71,7 @@ class Vector2D
 
   __eq: (a, b) ->
     a.x == b.x and a.y == b.y
-    
+
   __lt: (a, b) ->
     a.x < b.x or (a.x == b.x and a.y < b.y)
 
@@ -82,7 +82,7 @@ class Vector2D
     Vector2D -a.x, -a.y
 
   len: =>
-    sqrt(@x * @x + @y * @y) 
+    sqrt(@x * @x + @y * @y)
 
   len2: =>
     @x * @x + @y * @y
@@ -136,7 +136,7 @@ class Vector2D
     dx = a.x - b.x
     dy = a.y - b.y
     dx*dx + dy*dy
-  
+
   rotate: (phi) =>
     c, s = cos(phi), sin(phi)
     @x, @y = c * @x - s * @y, s * @x + c * @y
