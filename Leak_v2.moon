@@ -17,6 +17,7 @@ isClass = (o) ->
     return className
   className
 
+
 with Leak
   .countAll = (f) ->
     seen = {}
@@ -33,6 +34,7 @@ with Leak
           f v
 
     countObject Globals
+
 
   .getType = (o) ->
     if GlobalTypes == nil

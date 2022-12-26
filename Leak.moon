@@ -1,6 +1,6 @@
 Leak = {}
 
-globalTypeTable = nil
+export globalTypeTable = nil
 
 Leak.countAll = (f) ->
   seen = {}
@@ -10,6 +10,7 @@ Leak.countAll = (f) ->
     f(t)
     seen[t] = true
     for k, v in pairs t
+      print k
       if type(v) == "table"
         countTable v
       elseif type(v) == "userdata"

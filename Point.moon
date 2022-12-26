@@ -1,4 +1,7 @@
 
+boo = (Leak) ->
+  Leak.report 3
+
 
 class Point
   new: (x, y) =>
@@ -15,4 +18,4 @@ class Point
   --   return Point 1, 0
 
 
-{:Point}
+{:Point, :boo}

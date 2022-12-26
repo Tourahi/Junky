@@ -1,11 +1,13 @@
 -- Shake = assert require "Shake"
 Vector2D = assert require "Vector2D"
-Point = assert require "Point"
+ss = assert require "Point"
+Point = ss.Point
 Loader = assert require "Loader"
 Input = assert require "Input"
 Leak = assert require "Leak"
 Leakk = assert require "Leak_v2"
 Tint = assert require "Tint"
+DGraph = assert require "DGraph"
 moon = require "moon"
 export Dump = moon.p
 
@@ -24,6 +26,11 @@ export class PointV
     return Point 1, 0
 
 
+lol = ->
+  points = PointV 10, 20
+  amine = "lll"
+  Leakk.report 0
+
 with love
   .load = ->
     export input = Input!
@@ -32,6 +39,8 @@ with love
 
     print "POINTTT : "
     print point
+
+    export fpsGraph = DGraph 'fps', 50, 50
 
     --Dump Point\right!
 
@@ -51,19 +60,23 @@ with love
 
     t = Tint\HSLtoRGB {0.10,0.4,0.3}
 
-    --Dump t
+    --Dump getfenv 1
 
 
-    Leakk.report!
-    --Leak.report!
+    --Leakk.report!
+
+    -- Leak.report!
+
 
     print input.__class.__name
     --Leakk.countAll nil, input
 
   .update = (dt) ->
     -- shake\update dt
+    fpsGraph\update dt
     if input\pressed 'Oy'
       print "Hello"
 
   .draw = ->
+    fpsGraph\draw!
     -- love.graphics.draw l.assets.GG, 0, 0
